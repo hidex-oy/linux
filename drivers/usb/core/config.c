@@ -331,11 +331,11 @@ static int usb_parse_endpoint(struct device *ddev, int cfgno, int inum,
 		endpoint->desc.bInterval = n;
 	}
 	
-		/* Reset bInterval for Hidex Devices */
-    if (to_usb_device(ddev)->descriptor.idVendor == 0x2BB2)  {
-        dev_warn(ddev, "Hidex module with bInterval %d found, changing to 1\n", d->bInterval);
-        endpoint->desc.bInterval = 4;
-    }
+	/* Reset bInterval for Hidex Devices */
+	if (to_usb_device(ddev)->descriptor.idVendor == 0x2BB2) {
+		dev_warn(ddev, "Hidex module with bInterval %d found, changing to 4\n", d->bInterval);
+		endpoint->desc.bInterval = 4;
+	}
 	
 
 	/* Some buggy low-speed devices have Bulk endpoints, which is
