@@ -331,12 +331,17 @@ static int usb_parse_endpoint(struct device *ddev, int cfgno, int inum,
 		endpoint->desc.bInterval = n;
 	}
 	
-	/* Reset bInterval for Hidex Devices */
+	/* Reset bInterval for Hidex Devices with Hidex VID */
 	if (to_usb_device(ddev)->descriptor.idVendor == 0x2BB2) {
 		dev_warn(ddev, "Hidex module with bInterval %d found, changing to 4\n", d->bInterval);
 		endpoint->desc.bInterval = 4;
 	}
-	
+	else if (to_usb_device(ddev)->descriptor.idVendor == 0x03EB && to_usb_device(ddev)->descriptor.idProduct == 0x2402)
+	{
+		/* Reset bInterval for legacy Hidex Devices that still have Atmels VID and PID */
+		dev_warn(ddev, "Atmel module with bInterval %d found, changing to 4\n", d->bInterval);
+		endpoint->desc.bInterval = 4;
+	}
 
 	/* Some buggy low-speed devices have Bulk endpoints, which is
 	 * explicitly forbidden by the USB spec.  In an attempt to make
