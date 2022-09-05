@@ -2,7 +2,7 @@
 VERSION = 4
 PATCHLEVEL = 19
 SUBLEVEL = 94
-EXTRAVERSION = -ti-r73-hidex.11
+EXTRAVERSION = -ti-r73-hidex.12
 NAME = "People's Front"
 
 # *DOCUMENTATION*

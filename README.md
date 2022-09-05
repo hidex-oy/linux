@@ -1,6 +1,6 @@
 ## Set the version (just to make this example less pseudo code)
 ```bash
-export KERNELVERSION=4.19.94-ti-r73-hidex.10
+export KERNELVERSION=4.19.94-ti-r73-hidex.12
 ````
 
 **Note:** The build command seems to append a `+` at the end of the name when using the
@@ -23,7 +23,7 @@ make -j8 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
 
 **Note:** The "extra version" suffix is set in the `Makefile`.
 ```Makefile
-EXTRAVERSION = -ti-r73-hidex.10
+EXTRAVERSION = -ti-r73-hidex.12
 ```
 
 Compile the kernel, modules an Device Tree blob files:
@@ -73,7 +73,7 @@ mkdir -p /media/sd/boot/dtbs/${KERNELVERSION}+
 cp -p arch/arm/boot/dts/am335x-boneblack-uboot-univ.dtb /media/sd/boot/dtbs/${KERNELVERSION}+/
 
 # Or copy all of them:
-# cp -p arch/arm/boot/dts/*.dtb /media/sd/boot/dtbs/5.10.120-hidex.5+/
+# cp -p arch/arm/boot/dts/*.dtb /media/sd/boot/dtbs/${KERNELVERSION}+/
 ```
 
 Finally edit the file /media/sd/boot/uEnv.txt and change the uname_r value to point to this kernel name/file.
