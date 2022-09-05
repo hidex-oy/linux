@@ -80,3 +80,38 @@ Finally edit the file /media/sd/boot/uEnv.txt and change the uname_r value to po
 ```
 uname_r=${KERNELVERSION}+
 ```
+
+## Building a `*.deb` package of the kernel
+
+Copy the kernel image, the modules, and the Device Tree Overlay blob to some temporary directory.
+Also create or copy from an earlier release the `DEBIAN/control` file that includes the info about the package, and update it for this release (at least the version number).
+
+### Copy the files and directories to the temp directory
+
+Here we will use `~/kernel_temp/` as the target directory to prepare the file system layout of the package.
+
+```bash
+# Create or edit the package info file
+mkdir -p ~/kernel_temp/DEBIAN
+nano ~/kernel_temp/DEBIAN/control
+
+# Create the necessary directories for the boot directory
+mkdir -p ~/kernel_temp/boot/dtbs/${KERNELVERSION}+
+
+# Copy the kernel image and the modules directory
+mkdir -p ~/kernel_temp/lib/modules
+cp -p arch/arm/boot/zImage ~/kernel_temp/boot/vmlinuz-${KERNELVERSION}+
+cp -a /path/to/bbb_modules_dir/lib/modules/${KERNELVERSION}+ ~/kernel_temp/lib/modules/
+
+# Copy over the Device Tree file
+cp -p arch/arm/boot/dts/am335x-boneblack-uboot-univ.dtb ~/kernel_temp/boot/dtbs/${KERNELVERSION}+/
+```
+
+### Build the `deb` package
+
+If building the deb package on a desktop Ubuntu system, don't use the default compression options for `dpkg-deb`, as the `dpkg-deb` on the BeagleBone installation can't read the archive.
+
+Instead use for example `xz`, like so:
+```bash
+dpkg-deb -Zxz --build kernel_temp/ linux-image-hidex-4.19.94-ti-r73-hidex.12_armhf.deb
+```
